@@ -113,7 +113,7 @@ class AsyncOpenAIClient:
     async def chat_completion(
         self,
         messages: List[Dict[str, str]],
-        model: str = "gpt-3.5-turbo",
+        model: str = "gpt-4o",
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs
@@ -149,7 +149,7 @@ class AsyncOpenAIClient:
         self,
         messages: List[Dict[str, str]],
         response_model: Type[T],
-        model: str = "gpt-3.5-turbo",
+        model: str = "gpt-4o",
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs
@@ -194,13 +194,21 @@ class AsyncOpenAIClient:
         
         # Extract and validate the response
         import json
+        import re
         try:
             content = completion.choices[0].message.content
             if not content:
                 raise OpenAIAPIError("Empty response from OpenAI")
             
+            # Extract JSON from markdown code blocks if present
+            json_match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', content, re.DOTALL)
+            if json_match:
+                json_content = json_match.group(1).strip()
+            else:
+                json_content = content.strip()
+            
             # Parse JSON and validate with Pydantic model
-            response_data = json.loads(content.strip())
+            response_data = json.loads(json_content)
             return response_model(**response_data)
             
         except json.JSONDecodeError as e:
@@ -211,7 +219,7 @@ class AsyncOpenAIClient:
     async def simple_completion(
         self,
         prompt: str,
-        model: str = "gpt-3.5-turbo",
+        model: str = "gpt-4o",
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs

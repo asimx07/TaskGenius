@@ -32,7 +32,7 @@ class ExtractTitleDateWorker(BaseWorker):
             raise WorkerValidationError("Input data must be a dictionary")
         
         description = input_data.get("description")
-        if not description:
+        if description is None:
             raise WorkerValidationError("Description is required")
         
         if not isinstance(description, str):
@@ -80,8 +80,8 @@ class ExtractTitleDateWorker(BaseWorker):
             if context:
                 messages = self.add_context_to_messages(messages, context)
             
-            # Execute with function calling for date parsing
-            result = await self.execute_with_function_calling(
+            # Execute structured completion without function calling for now
+            result = await self.client.structured_completion(
                 messages=messages,
                 response_model=TaskExtractionResult,
                 temperature=0.1,  # Low temperature for consistent extraction
@@ -128,10 +128,10 @@ class ExtractLabelWorker(BaseWorker):
         description = input_data.get("description")
         title = input_data.get("title")
         
-        if not description:
+        if description is None:
             raise WorkerValidationError("Description is required")
         
-        if not title:
+        if title is None:
             raise WorkerValidationError("Title is required")
         
         if not isinstance(description, str) or not isinstance(title, str):
