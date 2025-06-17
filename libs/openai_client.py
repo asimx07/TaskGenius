@@ -193,13 +193,13 @@ class AsyncOpenAIClient:
         )
         
         # Extract and validate the response
+        import json
         try:
             content = completion.choices[0].message.content
             if not content:
                 raise OpenAIAPIError("Empty response from OpenAI")
             
             # Parse JSON and validate with Pydantic model
-            import json
             response_data = json.loads(content.strip())
             return response_model(**response_data)
             
