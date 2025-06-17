@@ -109,6 +109,31 @@ class BulkSummary(BaseModel):
     task_count: int = Field(..., description="Number of tasks summarized")
 
 
+class TaskExtractionResult(BaseModel):
+    """Schema for task extraction results from AI workers."""
+    
+    title: str = Field(..., max_length=255, description="Extracted task title")
+    due_date: Optional[datetime] = Field(None, description="Extracted due date")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Extraction confidence score")
+    reasoning: str = Field(..., description="Explanation of extraction logic")
+
+
+class LabelExtractionResult(BaseModel):
+    """Schema for label extraction results from AI workers."""
+    
+    label: str = Field(..., max_length=100, description="Extracted task label/category")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Extraction confidence score")
+    reasoning: str = Field(..., description="Explanation of categorization logic")
+
+
+class PriorityExtractionResult(BaseModel):
+    """Schema for priority extraction results from AI workers."""
+    
+    priority: str = Field(..., description="Extracted priority level (high, medium, low)")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Extraction confidence score")
+    reasoning: str = Field(..., description="Explanation of priority determination")
+
+
 # Error Schemas
 class ErrorDetail(BaseModel):
     """Schema for error details."""
