@@ -230,7 +230,8 @@ class BulkSummarizerWorker(BaseWorker):
                 insights.append(f"Most tasks are related to {most_common_label} ({label_counts[most_common_label]} tasks).")
         
         # Check for overdue or urgent tasks
-        current_time = datetime.now()
+        from datetime import timezone
+        current_time = datetime.now(timezone.utc)
         overdue_count = 0
         upcoming_count = 0
         
@@ -239,6 +240,10 @@ class BulkSummarizerWorker(BaseWorker):
             if due_date_str:
                 try:
                     due_date = datetime.fromisoformat(due_date_str.replace('Z', '+00:00'))
+                    # Ensure both datetimes are timezone-aware for comparison
+                    if due_date.tzinfo is None:
+                        due_date = due_date.replace(tzinfo=timezone.utc)
+                    
                     if due_date < current_time:
                         overdue_count += 1
                     elif (due_date - current_time).days <= 3:
