@@ -81,6 +81,46 @@ async def client(test_db: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
 
 
 @pytest_asyncio.fixture
+async def async_client(test_db: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+    """
+    Create an async test HTTP client.
+    
+    Args:
+        test_db: Test database session
+        
+    Yields:
+        AsyncClient: Test HTTP client
+    """
+    from db import get_db_session
+    
+    # Override database dependency
+    async def override_get_db_session():
+        yield test_db
+    
+    app.dependency_overrides[get_db_session] = override_get_db_session
+    
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac
+    
+    # Clean up
+    app.dependency_overrides.clear()
+
+
+@pytest_asyncio.fixture
+async def db_session(test_db: AsyncSession) -> AsyncSession:
+    """
+    Provide a database session for tests.
+    
+    Args:
+        test_db: Test database session
+        
+    Returns:
+        AsyncSession: Database session
+    """
+    return test_db
+
+
+@pytest_asyncio.fixture
 async def sample_task(test_db: AsyncSession) -> Task:
     """
     Create a sample task for testing.
