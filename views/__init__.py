@@ -1,1 +1,1 @@
-"""Views package for HTTP endpoints."""
+"""Views package for FastAPI endpoints."""

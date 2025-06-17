@@ -72,9 +72,9 @@ async def root() -> dict:
     }
 
 
-# Include routers (will be added in later commits)
-# from views.tasks import router as tasks_router
-# app.include_router(tasks_router, prefix="/api/v1")
+# Include routers
+from views.tasks import router as tasks_router
+app.include_router(tasks_router, prefix="/api/v1")
 
 
 if __name__ == "__main__":
