@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sparkles, Bot, Settings, AlertTriangle } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { api } from "@/lib/api"
+import { api } from "@/libs/api"
 
 interface CreateTaskDialogProps {
   children: React.ReactNode

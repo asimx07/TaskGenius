@@ -28,7 +28,7 @@ import { TaskSummary } from "@/components/task-summary"
 import { CreateTaskDialog } from "@/components/create-task-dialog"
 import { CharacterAvatar } from "@/components/character-avatar"
 import { DateRangeFilter } from "@/components/date-range-filter"
-import { api, filterTasksByDateRange } from "@/lib/api"
+import { api, filterTasksByDateRange } from "@/libs/api"
 
 interface Task {
   id: number
