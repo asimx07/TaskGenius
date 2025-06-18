@@ -113,7 +113,7 @@ class AsyncOpenAIClient:
     async def chat_completion(
         self,
         messages: List[Dict[str, str]],
-        model: str = "gpt-4o",
+        model: str = os.getenv("OPENAI_MODEL", "gpt-4o"),
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs
@@ -149,7 +149,7 @@ class AsyncOpenAIClient:
         self,
         messages: List[Dict[str, str]],
         response_model: Type[T],
-        model: str = "gpt-4o",
+        model: str = os.getenv("OPENAI_MODEL", "gpt-4o"),
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs
@@ -219,7 +219,7 @@ class AsyncOpenAIClient:
     async def simple_completion(
         self,
         prompt: str,
-        model: str = "gpt-4o",
+        model: str = os.getenv("OPENAI_MODEL", "gpt-4o"),
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         **kwargs

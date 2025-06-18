@@ -1,12 +1,9 @@
-version: '3.8'
-
 services:
   # Main API service
   api:
     build:
       context: .
       dockerfile: Dockerfile
-      target: dev
     container_name: taskgenius-api
     ports:
       - "8000:8000"
@@ -26,6 +23,21 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: taskgenius-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # This should match the name of the API service in docker-compose
+      - NEXT_PUBLIC_API_URL=http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped
 
 networks:
   default:

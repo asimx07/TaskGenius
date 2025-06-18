@@ -48,10 +48,22 @@ task_manager/
 └── tests/                  # Comprehensive test suite
 ```
 
+## 🌐 Frontend
+
+The frontend is a modern web application built with Next.js, providing a user-friendly interface to interact with the TaskGenius API. It leverages React for dynamic UI, Tailwind CSS for styling, and Shadcn UI components for a polished look and feel.
+
+### Key Technologies
+- **Next.js**: React framework for production
+- **React**: JavaScript library for building user interfaces
+- **TypeScript**: Strongly typed JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **Shadcn UI**: Reusable UI components
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Python 3.11+
+- Node.js 20+
 - OpenAI API key
 - Docker (optional)
 
@@ -76,27 +88,49 @@ task_manager/
    # Edit .env and add your OpenAI API key
    ```
 
-4. **Run the application**
+4. **Run the backend application**
    ```bash
    python -m uvicorn app:app --reload
    ```
 
-5. **Access the API**
+5. **Access the backend API**
    - API: http://localhost:8000
    - Documentation: http://localhost:8000/docs
    - Health Check: http://localhost:8000/health
 
+### Frontend Development
+
+1.  **Navigate to the frontend directory**
+    ```bash
+    cd frontend
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the Next.js development server**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Access the frontend application**
+    - Frontend: http://localhost:3000
+
 ### Docker Deployment
 
 1. **Build and run with Docker Compose**
+   Ensure your `OPENAI_API_KEY` is set in your `.env` file.
    ```bash
-   # Set your OpenAI API key in .env file
    docker-compose up --build
    ```
 
 2. **Access the application**
+   - Frontend: http://localhost:3000
    - API: http://localhost:8000
-   - Health Check: http://localhost:8000/health
+   - API Documentation: http://localhost:8000/docs
+   - API Health Check: http://localhost:8000/health
 
 ## 📚 API Documentation
 
@@ -194,6 +228,7 @@ pytest tests/test_tasks_api.py -v
 | `PORT` | Server port | `8000` |
 | `RELOAD` | Enable auto-reload | `true` |
 | `ALLOWED_ORIGINS` | CORS allowed origins | `*` |
+| `NEXT_PUBLIC_API_URL` | Frontend API URL (for Docker/Vercel) | `http://localhost:8000` |
 
 ### Database Configuration
 
