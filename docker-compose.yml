@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
+      target: dev
     container_name: taskgenius-api
     ports:
       - "8000:8000"
