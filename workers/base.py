@@ -164,17 +164,22 @@ class BaseWorker(ABC):
                 final_message = final_completion.choices[0].message
                 
                 if response_model:
-                    # Parse structured response
+                    # For structured responses after function calling, we need to make another call
+                    # to get properly formatted JSON response
+                    structured_messages = [
+                        {"role": "system", "content": f"Based on the previous conversation and function call results, provide a response in valid JSON format that matches this schema: {response_model.model_json_schema()}. Respond only with the JSON, no additional text."},
+                        {"role": "user", "content": f"Please format the final result as JSON based on our conversation about: {messages[0].get('content', 'the task')}"}
+                    ]
+                    
                     try:
-                        content = final_message.content
-                        if not content:
-                            raise WorkerProcessingError("Empty response from OpenAI")
-                        response_data = json.loads(content.strip())
-                        return response_model(**response_data)
-                    except json.JSONDecodeError as e:
-                        raise WorkerProcessingError(f"Invalid JSON response: {e}")
+                        return await self.client.structured_completion(
+                            messages=structured_messages,
+                            response_model=response_model,
+                            temperature=0.1,
+                            max_tokens=500
+                        )
                     except Exception as e:
-                        raise WorkerProcessingError(f"Failed to parse response: {e}")
+                        raise WorkerProcessingError(f"Failed to get structured response: {e}")
                 else:
                     return final_message.content
             
