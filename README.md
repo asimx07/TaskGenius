@@ -2,6 +2,9 @@
 
 A sophisticated task management application that leverages AI to intelligently extract task information from natural language descriptions, automatically categorize tasks, and provide insightful summaries.
 
+![image](https://github.com/user-attachments/assets/e39dcc66-6210-4687-bbcc-c897fa7ecfb6)
+![image](https://github.com/user-attachments/assets/1442d1f4-2af7-4c39-a704-ed873d185994)
+
 ## 🚀 Features
 
 ### Core Functionality
